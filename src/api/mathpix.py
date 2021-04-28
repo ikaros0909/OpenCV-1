@@ -16,9 +16,10 @@ def render_doc_text():
     # image = Image.open(filein)
     fileurl = '../resources/opencv/cut2/'
     # print(filein)
-    filename = ['0']
+    # filename = ['1','2','3','4','6','5','7','8','9','10','11','12','13','14','15','16','17','18','19']
+    filename = ['1','2','5','7','9','10','11','12','13','14','15','16']
     for i in filename :
-        filename11 = 'mun5_' + i + '_cut2.jpg'
+        filename11 = 'mun7_' + i + '_cut2.jpg'
     # filename11 = 'mun5_8_ys.jpg'
         print(filename11)
         # file_path = filein

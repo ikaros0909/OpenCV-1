@@ -28,10 +28,12 @@ def boundary(imgpath):
   for idx in range(len(contours)):
       x, y, w, h = cv2.boundingRect(contours[idx])
       mask[y:y+h, x:x+w] = 0
+      
+      # print("r=", r, "w=",w, "h=",h, "x=",x)
       cv2.drawContours(mask, contours, idx, (255, 255, 255), -1)
       r = float(cv2.countNonZero(mask[y:y+h, x:x+w])) / (w * h)
-      # print("r=", r, "w=",w, "h=",h)
-      if r > 0.2 and w > 1 and h > 4 and x != 0:
+      print("r=", r, "w=",w, "h=",h, "x=",x)
+      if r > 0.2 and w > 1 and h > 4 : #and x != 0:
       # if x == 0 :
           # cv2.rectangle(image, (x, y), (x+w-1, y+h-1), (0, 255, 0), 2)
           cv2.rectangle(image, (x, y), (x+w-1, y+h-1), (255, 0, 0), 1)
@@ -44,21 +46,18 @@ def boundary(imgpath):
 
 
 def test(imgpath):
-  filename = 'mun5'
+  filename = 'mun8'
   imgurl = imgpath + filename + '.jpg'
-
   image = cv2.imread(imgurl)
-  print(imgurl)
   image2 = image.copy()
   # image = cv2.pyrDown(image)
-  # image = cv2.pyrDown(image)
   small = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (30, 6))
+  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (30, 3))
   grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
  
   _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
-  kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 1))
+  # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 1))
   connected = cv2.morphologyEx(bw, cv2.MORPH_CLOSE, kernel)
   # using RETR_EXTERNAL instead of RETR_CCOMP
   contours, hierarchy = cv2.findContours(connected.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -74,7 +73,7 @@ def test(imgpath):
   # cv2.imshow("img", image)
   # cv2.imshow("1", roi)
 
-  print(range(len(contours)))
+  # print(range(len(contours)))
   for idx in range(len(contours)):
       x, y, w, h = cv2.boundingRect(contours[idx])
      
@@ -83,7 +82,7 @@ def test(imgpath):
       r = float(cv2.countNonZero(mask[y:y+h, x:x+w])) / (w * h)
       
       print("r=", r, "w=",w, "h=",h, "x=",x, idx)
-      if r > 0.1 and w > 1 and h > 4 and x != 0:
+      if r > 0.1 and w > 1 and h > 4 :# and x != 0:
           roi = image[y:y+h, x:x+w] 
           # cv2.imshow('mun8_'+ str(idx) +'_c',roi)
       # if x == 0 :
@@ -96,11 +95,11 @@ def test(imgpath):
           #   cv2.imshow('mun8_'+ str(idx) +'_c', cv2.rectangle(roi, (x, y), (x+w-1, y+h-1), (255, 0, 0), 1))
           cv2.imshow('mun8_'+ str(idx) +'_c1', roi)
           # cv2.imshow('mun8_'+ str(idx) +'_c', image)
-          # cv2.imwrite('../resources/opencv/'+filename+'_'+str(idx)+'_cut.jpg', roi)
+          cv2.imwrite('../resources/opencv/cut2/'+filename+'_'+str(idx)+'_cut2.jpg', roi)
           cv2.rectangle(image, (x, y), (x+w-1, y+h-1), (255, 0, 0), 1) 
   # cv2.imshow('111', image)
   cv2.imshow('rects', image)
-  # cv2.imwrite('../resources/opencv/'+filename+'_opencv.jpg', image)  
+  cv2.imwrite('../resources/opencv/cut2/'+filename+'_opencv2.jpg', image)  
 
   # rgb.save('../resources/testtest.jpg')
   # image.show()
@@ -112,7 +111,7 @@ def test(imgpath):
 if __name__ == '__main__':
     # detect_text('../resource/mun5.jpg')
     # detect_text1('../resource/mun5.jpg', '../resource/mun5_out2.jpg')
-    # test('../resources/')
-    boundary('../resources/mun6.jpg')
+    test('../resources/')
+    # boundary('../resources/mun7.jpg')
     # detect_document('../resource/mun5.jpg')
 
