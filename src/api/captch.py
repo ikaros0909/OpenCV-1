@@ -45,14 +45,15 @@ def boundary(imgpath):
   cv2.waitKey()
 
 
-def test(imgpath):
+#영역별로 자르기
+def boundary_sub(imgpath):
   filename = 'mun8'
   imgurl = imgpath + filename + '.jpg'
   image = cv2.imread(imgurl)
   image2 = image.copy()
   # image = cv2.pyrDown(image)
   small = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (30, 3))
+  kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (30, 7))
   grad = cv2.morphologyEx(small, cv2.MORPH_GRADIENT, kernel)
  
   _, bw = cv2.threshold(grad, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
@@ -69,7 +70,6 @@ def test(imgpath):
 
   # x=320; y=150; w=50; h=50;
   # roi = image[y:y+h, x:x+w]  
-  # cv2.rectangle(roi, (0,0), (h-1, w-1), (0,255,0)) # roi 전체에 사각형 그리기 ---②
   # cv2.imshow("img", image)
   # cv2.imshow("1", roi)
 
@@ -93,25 +93,20 @@ def test(imgpath):
 
           # if w == 194:
           #   cv2.imshow('mun8_'+ str(idx) +'_c', cv2.rectangle(roi, (x, y), (x+w-1, y+h-1), (255, 0, 0), 1))
-          cv2.imshow('mun8_'+ str(idx) +'_c1', roi)
-          # cv2.imshow('mun8_'+ str(idx) +'_c', image)
-          cv2.imwrite('../resources/opencv/cut2/'+filename+'_'+str(idx)+'_cut2.jpg', roi)
-          cv2.rectangle(image, (x, y), (x+w-1, y+h-1), (255, 0, 0), 1) 
-  # cv2.imshow('111', image)
-  cv2.imshow('rects', image)
-  cv2.imwrite('../resources/opencv/cut2/'+filename+'_opencv2.jpg', image)  
 
-  # rgb.save('../resources/testtest.jpg')
-  # image.show()
+          cv2.imshow('mun8_'+ str(idx) +'_c1', roi)
+          # cv2.imwrite('../resources/opencv/cut2/'+filename+'_'+str(idx)+'_cut2.jpg', roi) #세부 이미지 저장
+          cv2.rectangle(image, (x, y), (x+w-1, y+h-1), (255, 0, 0), 1) #원본 이미지에 영역 표시하기 위해 
+
+  cv2.imshow('rects', image)
+  # cv2.imwrite('../resources/opencv/cut2/'+filename+'_opencv2.jpg', image)  #원본 이미지에 영역 표시된 이미지 저장
+
   cv2.waitKey()
 
 
  
 
 if __name__ == '__main__':
-    # detect_text('../resource/mun5.jpg')
-    # detect_text1('../resource/mun5.jpg', '../resource/mun5_out2.jpg')
-    test('../resources/')
+    boundary_sub('../resources/')
     # boundary('../resources/mun7.jpg')
-    # detect_document('../resource/mun5.jpg')
 
